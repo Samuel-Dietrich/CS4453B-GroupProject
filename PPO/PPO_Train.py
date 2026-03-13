@@ -8,7 +8,7 @@ print("Setup Environment...")
 # 1. Create the environment
 # change n_envs to the number of cores ur computer has (Sams is 6 preformance so thats y it is 6)
 env_id = "PongNoFrameskip"
-env = make_atari_env(env_id, n_envs=6, seed=0)
+env = make_atari_env(env_id, n_envs=10, seed=0)
 
 # 2. Stack 4 frames so the model can perceive velocity
 env = VecFrameStack(env, n_stack=4)
@@ -33,7 +33,7 @@ model = PPO(
 
 # 4. Train the agent
 print("Training started...")
-TOTALSTEPS = 1_000_000
+TOTALSTEPS = 2_500_000
 model.learn(total_timesteps=TOTALSTEPS)
 
 # 5. Save the model
