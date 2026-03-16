@@ -16,5 +16,4 @@ The Command to install all packages is:
 
 
 
-Tensorboard is used to visualise the model while it is training. To use it begin training with `tensorboard\_log="./ppo\_pong\_tensorboard/"` set in the model paremeters. Then in a CMD window run the command `tensorboard --logdir ./ppo\_pong\_tensorboard/`. Finally go to `http://localhost:6006/` and you can see live graphs of the models rewards and losses.
-
+Tensorboard is used to visualise the model while it is training. To use it begin training with `tensorboard\_log="./../pong\_tensorboard/Scratch"` set in the model parameters. Then in a CMD window from the `CS4453B-GroupProject` folder run the command `tensorboard --logdir ./pong\_tensorboard/Scratch`. Finally go to `http://localhost:6006/` and you can see live graphs of the models rewards and losses. When making the final versions of the models remove the `Scratch` from the above commands.
