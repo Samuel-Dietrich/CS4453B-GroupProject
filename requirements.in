@@ -1,0 +1,5 @@
+gymnasium[atari,accept-rom-license]==0.29.1
+shimmy
+stable-baselines3
+opencv-python
+tensorboard
