@@ -8,11 +8,11 @@ For this version of pong the game ends when one player reaches 21 points. If the
 
 
 
-All code was done in Python 3.11.
+All code was done in Python **3.11**.
 
 The Command to install all packages is:
 
-`py -m pip install "gymnasium[atari,accept-rom-license]==0.29.1" stable-baselines3 shimmy opencv-python tensorboard`
+`py -m pip install -r "requirements.txt"`
 
 
 
