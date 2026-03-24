@@ -42,7 +42,7 @@ fsspec==2026.2.0
     # via torch
 grpcio==1.78.0
     # via tensorboard
-gymnasium[accept-rom-license,atari]==0.29.1
+gymnasium[atari]==0.29.1
     # via
     #   -r requirements.in
     #   shimmy
