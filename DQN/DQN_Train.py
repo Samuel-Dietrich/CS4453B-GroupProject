@@ -4,7 +4,7 @@ from stable_baselines3.common.vec_env import VecFrameStack
 
 
 class DQNAgent(object):
-    def __init__(self):
+    def __init__(self, log_dir):
         print("Setup Environment...")
 
         # Create the environment
