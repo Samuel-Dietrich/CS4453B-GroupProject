@@ -32,13 +32,13 @@ class DQNAgent(object):
             exploration_fraction=0.1,  # Fraction of total steps for epsilon decay
             exploration_final_eps=0.01,  # Final "greedy" exploration rate
             verbose=1,
-            tensorboard_log="./../pong_tensorboard/Scratch"
+            tensorboard_log=log_dir
         )
 
-    def trainAgent(self, total_timesteps):
+    def trainAgent(self, total_timesteps, model_name, callback):
         # Train the agent
         print(f"Training started TimeSteps {total_timesteps}...")
-        self.model.learn(total_timesteps=total_timesteps, tb_log_name=f"DQN_{total_timesteps / 1_000_000}_Step")
+        self.model.learn(total_timesteps=total_timesteps, tb_log_name=model_name, callback=callback)
 
         self.model.save(f"dqn_pong_model_{total_timesteps}")
         print("Model saved!")

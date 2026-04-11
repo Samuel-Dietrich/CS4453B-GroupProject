@@ -2,50 +2,43 @@ from DQN.DQN_Train import DQNAgent
 from PPO.PPO_Train import PPOAgent
 from A2C.A2C_Train import A2CAgent
 import psutil
-import threading
-import time
-from torch.utils.tensorboard import SummaryWriter
+from stable_baselines3.common.callbacks import BaseCallback
 
-TOTAL_TIMESTEPS = 100_000
+TOTAL_TIMESTEPS = 2_500_000
 # make sure the 'tensorboard_log' path in the agent is the same here
-LOG_DIR = f"./pong_tensorboard/Scratch"
+LOG_DIR = f"./../pong_tensorboard"
+
+
+class SystemMetricsCallback(BaseCallback):
+    last_step = -1001
+    def __init__(self, verbose=0):
+        super(SystemMetricsCallback, self).__init__(verbose)
+
+    def _on_step(self) -> bool:
+        if self.n_calls >= self.last_step + 1000:
+            cpu_usage = psutil.cpu_percent()
+            mem_usage = psutil.virtual_memory().percent
+
+            self.logger.record("system/cpu_usage", cpu_usage)
+            self.logger.record("system/memory_usage", mem_usage)
+            self.last_step = self.n_calls
+
+            print(f"Logged - CPU: {cpu_usage}%, MEM: {mem_usage}%")
+
+        return True
 
 """
 TO CHANGE MODEL CHANGE THE BELOW 2 LINES TO ONE OF THE FOLLOWING
 MODEL_NAME: Change first 3 letters in the string
             - Options are DQN, A2C and PPO
-            - Results in DQN_{TOTAL_TIMESTEPS / 1_000_000}_Step_1, A2C_{TOTAL_TIMESTEPS / 1_000_000}_Step_1 or PPO_{TOTAL_TIMESTEPS / 1_000_000}_Step_1
+            - Results in DQN_{TOTAL_TIMESTEPS / 1_000_000}_Step, A2C_{TOTAL_TIMESTEPS / 1_000_000}_Step or PPO_{TOTAL_TIMESTEPS / 1_000_000}_Step
 Agent: Change first 3 letters in the class name
             -  Options are DQN, A2C and PPO.
             -  Results in DQNAgent, A2CAgent or PPOAgent
 
 """
-MODEL_NAME = f"DQN_{TOTAL_TIMESTEPS / 1_000_000}_Step_3" # dont forget the _1 at the end which does not show in the agent
-Agent = DQNAgent("./." + LOG_DIR)
+MODEL_NAME = f"PPO_{TOTAL_TIMESTEPS / 1_000_000}_Step"
+Agent = PPOAgent(LOG_DIR)
 
-
-
-thread1 = threading.Thread(target=Agent.trainAgent, args=(TOTAL_TIMESTEPS,))
-writer = SummaryWriter(log_dir=LOG_DIR + "/" + MODEL_NAME)
-
-thread1.start()
-
-step = 0
-try:
-    while thread1.is_alive():
-        # Get metrics
-        memory_percent = psutil.virtual_memory().percent
-        cpu_usage = psutil.cpu_percent(interval=1)
-
-        # Write to TensorBoard
-        writer.add_scalar("System/Memory_Usage", memory_percent, step)
-        writer.add_scalar("System/CPU_Usage", cpu_usage, step)
-
-        print(f"Logged - CPU: {cpu_usage}%, MEM: {memory_percent}%")
-
-        step += 1
-        time.sleep(10)
-
-finally:
-    writer.close()
-    thread1.join()
+sys_callback = SystemMetricsCallback()
+Agent.trainAgent(TOTAL_TIMESTEPS, MODEL_NAME, sys_callback)

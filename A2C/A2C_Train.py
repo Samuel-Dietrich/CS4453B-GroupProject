@@ -8,7 +8,7 @@ from typing import Callable
 
 
 class A2CAgent(object):
-    def __init__(self):
+    def __init__(self, log_dir):
         print("Setup Environment...")
 
         # Create the environment
@@ -21,7 +21,7 @@ class A2CAgent(object):
         print("Initialize A2C...")
 
         # Initialize the A2C model
-        model = A2C(
+        self.model = A2C(
             policy="CnnPolicy",
             env=env,
             learning_rate=self.linear_schedule(7e-4),
@@ -30,7 +30,7 @@ class A2CAgent(object):
             vf_coef=0.25,
             gamma=0.99,
             verbose=1,
-            tensorboard_log="./pong_tensorboard/Scratch",
+            tensorboard_log=log_dir,
             policy_kwargs=dict(
                 optimizer_class=th.optim.RMSprop,
                 optimizer_kwargs=dict(alpha=0.99, eps=1e-5, weight_decay=0)
@@ -45,11 +45,10 @@ class A2CAgent(object):
         return func
 
 
-    def trainAgent(self, total_timesteps):
+    def trainAgent(self, total_timesteps, model_name, callback):
         # Train the agent
         print("Training started...")
-        # log_interval indicates number of updates, now updates are much more frequent
-        self.model.learn(total_timesteps=total_timesteps, tb_log_name=f"A2C_{total_timesteps/1_000_000}_Step", log_interval=100)
+        self.model.learn(total_timesteps=total_timesteps, tb_log_name=model_name, callback=callback)
 
         # Save the model
         self.model.save(f"./A2C/a2c_pong_model_{total_timesteps}")

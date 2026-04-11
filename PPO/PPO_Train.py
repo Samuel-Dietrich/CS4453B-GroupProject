@@ -3,7 +3,7 @@ from stable_baselines3.common.env_util import make_atari_env
 from stable_baselines3.common.vec_env import VecFrameStack
 
 class PPOAgent(object):
-    def __init__(self):
+    def __init__(self, log_dir):
         print("Setup Environment...")
 
         # Create the environment
@@ -29,13 +29,13 @@ class PPOAgent(object):
             ent_coef=0.01,  # Keeps paddle moving/exploring
             vf_coef=0.5,  # How much the "Critic" matters
             verbose=1,
-            tensorboard_log="./../pong_tensorboard/Scratch" # Log location for comparison
+            tensorboard_log=log_dir # Log location for comparison
         )
-    def trainAgent(self, total_timesteps):
+    def trainAgent(self, total_timesteps, model_name, callback):
 
         # Train the agent
         print("Training started...")
-        self.model.learn(total_timesteps=total_timesteps, tb_log_name=f"A2C_{total_timesteps/1_000_000}_Step")
+        self.model.learn(total_timesteps=total_timesteps, tb_log_name=model_name, callback=callback)
 
         self.model.save(f"ppo_pong_model_{total_timesteps}")
         print("Model saved!")
