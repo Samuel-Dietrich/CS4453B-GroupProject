@@ -37,8 +37,8 @@ Agent: Change first 3 letters in the class name
             -  Results in DQNAgent, A2CAgent or PPOAgent
 
 """
-MODEL_NAME = f"A2C_{TOTAL_TIMESTEPS / 1_000_000}_Step"
-Agent = A2CAgent(LOG_DIR)
+MODEL_NAME = f"DQN_{TOTAL_TIMESTEPS / 1_000_000}_Step"
+Agent = DQNAgent(LOG_DIR)
 
 sys_callback = SystemMetricsCallback()
 Agent.trainAgent(TOTAL_TIMESTEPS, MODEL_NAME, sys_callback)

@@ -31,6 +31,7 @@ class PPOAgent(object):
             verbose=1,
             tensorboard_log=log_dir # Log location for comparison
         )
+
     def trainAgent(self, total_timesteps, model_name, callback):
 
         # Train the agent

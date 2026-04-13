@@ -24,13 +24,14 @@ class DQNAgent(object):
             learning_rate=1e-4,
             buffer_size=100_000,  # Experience Replay size (RAM intensive)
             learning_starts=10_000,  # Don't train until buffer has some data
-            batch_size=32,  # Classic Atari DQN uses 32
-            tau=1.0,  # Hard update for target network
-            target_update_interval=1000,  # How often to update the target network
+            batch_size=128, # 128 to stabilize gradiant
+            tau=0.5,  # Soft update for target network
+            target_update_interval=10,  # How often to update the target network
             train_freq=4,  # Update the model every 4 steps
             gradient_steps=1,  # How many gradient steps to do per update
-            exploration_fraction=0.1,  # Fraction of total steps for epsilon decay
+            exploration_fraction=0.2,  # Fraction of total steps for epsilon decay
             exploration_final_eps=0.01,  # Final "greedy" exploration rate
+            policy_kwargs=dict(net_arch=[256, 256]), # Network depth
             verbose=1,
             tensorboard_log=log_dir
         )
