@@ -4,7 +4,7 @@ from A2C.A2C_Train import A2CAgent
 import psutil
 from stable_baselines3.common.callbacks import BaseCallback
 
-TOTAL_TIMESTEPS = 2_500_000
+TOTAL_TIMESTEPS = 10_000_000
 # make sure the 'tensorboard_log' path in the agent is the same here
 LOG_DIR = f"./../pong_tensorboard"
 
@@ -37,8 +37,8 @@ Agent: Change first 3 letters in the class name
             -  Results in DQNAgent, A2CAgent or PPOAgent
 
 """
-MODEL_NAME = f"DQN_{TOTAL_TIMESTEPS / 1_000_000}_Step"
-Agent = DQNAgent(LOG_DIR)
+MODEL_NAME = f"PPO_{TOTAL_TIMESTEPS / 1_000_000}_Step"
+Agent = PPOAgent(LOG_DIR)
 
 sys_callback = SystemMetricsCallback()
 Agent.trainAgent(TOTAL_TIMESTEPS, MODEL_NAME, sys_callback)
